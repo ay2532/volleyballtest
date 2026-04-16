@@ -9,15 +9,15 @@
     :root,[data-theme="light"]{--text-xs:clamp(.75rem,.7rem + .25vw,.875rem);--text-sm:clamp(.875rem,.8rem + .35vw,1rem);--text-base:clamp(1rem,.95rem + .25vw,1.125rem);--text-lg:clamp(1.125rem,1rem + .75vw,1.5rem);--text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);--space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-5:1.25rem;--space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;--radius-md:.5rem;--radius-lg:.75rem;--radius-xl:1rem;--radius-full:9999px;--color-bg:#f7f6f2;--color-surface:#f9f8f5;--color-surface-2:#fbfbf9;--color-border:#d4d1ca;--color-divider:#dcd9d5;--color-text:#28251d;--color-text-muted:#6d6b66;--color-primary:#01696f;--color-primary-hover:#0c4e54;--color-primary-soft:#cedcd8;--color-success:#437a22;--color-warning:#da7101;--color-error:#a12c7b;--shadow-sm:0 1px 2px rgb(40 37 29 / .06);--shadow-md:0 4px 12px rgb(40 37 29 / .08);--font-body:'General Sans','Inter',sans-serif;--transition:180ms cubic-bezier(.16,1,.3,1)}
     [data-theme="dark"]{--color-bg:#171614;--color-surface:#1c1b19;--color-surface-2:#201f1d;--color-border:#393836;--color-divider:#262523;--color-text:#cdccca;--color-text-muted:#a4a39f;--color-primary:#4f98a3;--color-primary-hover:#227f8b;--color-primary-soft:#313b3b;--color-success:#6daa45;--color-warning:#fdab43;--color-error:#d163a7;--shadow-sm:0 1px 2px rgb(0 0 0 / .20);--shadow-md:0 4px 12px rgb(0 0 0 / .30)}
     *{box-sizing:border-box;margin:0;padding:0} html{-webkit-text-size-adjust:none;text-size-adjust:none} body{min-height:100dvh;font-family:var(--font-body);font-size:var(--text-base);line-height:1.6;color:var(--color-text);background:var(--color-bg)} img,svg{display:block;max-width:100%} button,input,textarea,select{font:inherit;color:inherit} button{cursor:pointer;border:none;transition:background var(--transition),border-color var(--transition),color var(--transition),box-shadow var(--transition)}
-    .shell{max-width:1240px;margin:0 auto;padding:var(--space-4)} header{display:flex;justify-content:space-between;align-items:center;gap:var(--space-4);padding:var(--space-4) 0 var(--space-6)} .brand{display:flex;align-items:center;gap:var(--space-3);font-weight:700}.brand svg{width:2rem;height:2rem;color:var(--color-primary)}
-    .theme-toggle,.btn,.mini-btn,.icon-btn{min-height:44px}.theme-toggle,.icon-btn{min-width:44px;border-radius:var(--radius-full);background:var(--color-surface);border:1px solid color-mix(in srgb,var(--color-text) 12%,transparent)}
-    .hero,main{display:grid;grid-template-columns:1.05fr .95fr;gap:var(--space-4)} .panel,.team{background:var(--color-surface);border:1px solid color-mix(in srgb,var(--color-text) 10%,transparent);border-radius:var(--radius-xl);box-shadow:var(--shadow-sm)} .panel{padding:var(--space-5)}
+    .shell{max-width:1240px;margin:0 auto;padding:var(--space-3)} header{display:flex;justify-content:space-between;align-items:center;gap:var(--space-3);padding:var(--space-3) 0 var(--space-4);position:sticky;top:0;background:color-mix(in srgb,var(--color-bg) 92%,transparent);backdrop-filter:blur(10px);z-index:20} .brand{display:flex;align-items:center;gap:var(--space-3);font-weight:700}.brand svg{width:1.8rem;height:1.8rem;color:var(--color-primary)}
+    .theme-toggle,.btn,.mini-btn,.icon-btn{min-height:48px}.theme-toggle,.icon-btn{min-width:48px;border-radius:var(--radius-full);background:var(--color-surface);border:1px solid color-mix(in srgb,var(--color-text) 12%,transparent)}
+    .hero,main{display:grid;grid-template-columns:1.05fr .95fr;gap:var(--space-4)} .panel,.team{background:var(--color-surface);border:1px solid color-mix(in srgb,var(--color-text) 10%,transparent);border-radius:var(--radius-xl);box-shadow:var(--shadow-sm)} .panel{padding:var(--space-4)}
     h1{font-size:var(--text-xl);line-height:1.15;margin-bottom:var(--space-3)} h2{font-size:var(--text-lg);line-height:1.2} .lead,.meta,.hint{color:var(--color-text-muted)}
     .mini-grid,.teams,.stack{display:grid;gap:var(--space-3)} .mini-grid{grid-template-columns:repeat(3,1fr);margin-top:var(--space-5)} .stat{background:var(--color-surface-2);padding:var(--space-3);border-radius:var(--radius-lg)} .stat strong{display:block;font-size:var(--text-lg)}
     label,.subhead{display:block;font-weight:700;margin-bottom:var(--space-2)} textarea,select,input{width:100%;border:1px solid var(--color-border);background:var(--color-surface-2);border-radius:var(--radius-lg);padding:var(--space-3) var(--space-4)} textarea{min-height:170px;resize:vertical}.small-area{min-height:92px}.tiny-area{min-height:78px}
-    .row,.actions,.inline,.toolbar{display:flex;flex-wrap:wrap;gap:var(--space-3)} .row>*{flex:1 1 240px}
-    .btn{padding:var(--space-3) var(--space-4);border-radius:var(--radius-full);font-weight:700}.btn-primary{background:var(--color-primary);color:#fff}.btn-primary:hover{background:var(--color-primary-hover)}.btn-secondary{background:var(--color-primary-soft);color:var(--color-text)}.btn-ghost{background:transparent;color:var(--color-text);border:1px solid color-mix(in srgb,var(--color-text) 12%,transparent)}
-    .mini-btn{min-height:36px;padding:.45rem .8rem;border-radius:var(--radius-full);background:transparent;border:1px solid color-mix(in srgb,var(--color-text) 14%,transparent);color:var(--color-text)}
+    .row,.actions,.inline,.toolbar{display:flex;flex-wrap:wrap;gap:var(--space-3)} .row>*{flex:1 1 240px} .actions.mobile-stack,.mobile-stack{display:grid;gap:var(--space-2)}
+    .btn{padding:var(--space-3) var(--space-4);border-radius:var(--radius-full);font-weight:700;width:100%}.btn-primary{background:var(--color-primary);color:#fff}.btn-primary:hover{background:var(--color-primary-hover)}.btn-secondary{background:var(--color-primary-soft);color:var(--color-text)}.btn-ghost{background:transparent;color:var(--color-text);border:1px solid color-mix(in srgb,var(--color-text) 12%,transparent)}
+    .mini-btn{min-height:42px;padding:.55rem .85rem;border-radius:var(--radius-full);background:transparent;border:1px solid color-mix(in srgb,var(--color-text) 14%,transparent);color:var(--color-text)}
     .team-head{display:flex;justify-content:space-between;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:color-mix(in srgb,var(--color-primary) 10%,var(--color-surface));border-bottom:1px solid color-mix(in srgb,var(--color-text) 10%,transparent)}
     .team ul{list-style:none;padding:var(--space-3) var(--space-4) var(--space-4);display:grid;gap:var(--space-2)} .team li{display:flex;justify-content:space-between;align-items:center;gap:var(--space-3);padding:var(--space-2) var(--space-3);background:var(--color-surface-2);border-radius:var(--radius-md)}
     .badge{display:inline-flex;align-items:center;padding:.25rem .7rem;border-radius:var(--radius-full);background:color-mix(in srgb,var(--color-success) 14%,transparent);color:var(--color-success);font-size:var(--text-sm);font-weight:700}.hidden{display:none}.empty{padding:var(--space-8);text-align:center;color:var(--color-text-muted)}.warn{color:var(--color-warning)}.error{color:var(--color-error)}
@@ -25,10 +25,12 @@
     .pill-list{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-top:var(--space-2)} .pill{display:inline-flex;align-items:center;gap:.45rem;padding:.35rem .75rem;border-radius:var(--radius-full);background:var(--color-primary-soft);font-size:var(--text-sm);border:1px solid color-mix(in srgb,var(--color-text) 10%,transparent)} .pill button{min-height:auto;padding:0;border:none;background:none;color:var(--color-warning);font-weight:700}
     .pill.active{background:color-mix(in srgb,var(--color-success) 16%,transparent);color:var(--color-success)} .pill.inactive{background:color-mix(in srgb,var(--color-warning) 14%,transparent);color:var(--color-warning)} .pill.rested{outline:1px solid color-mix(in srgb,var(--color-success) 28%,transparent)} .pill.newbie{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--color-primary) 30%,transparent)}
     .output-top{display:flex;justify-content:space-between;align-items:center;gap:var(--space-3);margin-bottom:var(--space-4)}
-    .attendance-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--space-2);margin-top:var(--space-3)} .check-item{display:flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-3);border-radius:var(--radius-lg);background:var(--color-surface);border:1px solid color-mix(in srgb,var(--color-text) 10%,transparent);min-height:44px} .check-item input{width:auto}
+    .attendance-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--space-2);margin-top:var(--space-3)} .check-item{display:flex;align-items:center;gap:var(--space-2);padding:var(--space-3);border-radius:var(--radius-lg);background:var(--color-surface);border:1px solid color-mix(in srgb,var(--color-text) 10%,transparent);min-height:52px} .check-item input{width:auto;transform:scale(1.15)}
     .summary{display:grid;gap:var(--space-2);margin-top:var(--space-4)} .summary-card{padding:var(--space-3);border-radius:var(--radius-lg);background:var(--color-surface-2);border:1px solid color-mix(in srgb,var(--color-text) 8%,transparent)}
+    .winner-controls{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-2);margin-top:var(--space-3)} .winner-btn.active{background:var(--color-primary);color:#fff;border-color:transparent} .rested-box{margin-top:var(--space-4)} .section-title{display:flex;justify-content:space-between;align-items:center;gap:var(--space-2);margin-bottom:var(--space-2)} .sticky-actions{position:sticky;bottom:0;padding:var(--space-3);margin:var(--space-4) calc(var(--space-4) * -1) calc(var(--space-4) * -1);background:color-mix(in srgb,var(--color-bg) 94%,transparent);backdrop-filter:blur(10px);border-top:1px solid color-mix(in srgb,var(--color-text) 10%,transparent)}
     .result-actions{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-top:var(--space-3)}
     @media (max-width:980px){.hero,main,.mini-grid{grid-template-columns:1fr}.output-top{flex-direction:column;align-items:flex-start}}
+    @media (max-width:720px){body{padding-bottom:5.5rem}.shell{padding:var(--space-2)} header{padding:var(--space-2) 0 var(--space-3)} .brand span{font-size:var(--text-sm)} .hero{gap:var(--space-3)} .panel{padding:var(--space-3)} .mini-grid{grid-template-columns:1fr;gap:var(--space-2);margin-top:var(--space-4)} .row,.inline,.toolbar,.actions{flex-direction:column} .toolbar{align-items:stretch!important} .attendance-grid{grid-template-columns:1fr} .winner-controls{grid-template-columns:1fr} .team-head,.team li{padding-left:var(--space-3);padding-right:var(--space-3)} textarea{min-height:140px} .small-area,.tiny-area{min-height:86px} .sticky-actions{display:grid;gap:var(--space-2)}}
   </style>
 </head>
 <body>
@@ -46,23 +48,16 @@
 
     <section class="hero">
       <div class="panel">
-        <h1>支援遲到出席、加人走人，同更穩定嘅下一局分隊</h1>
-        <p class="lead">系統固定每局安排 2 隊、每隊 6 人。你而家可以先建立總名單，再勾選當前實際出席嘅人；遲到球員到場後，只需切返出席狀態再排下一局。</p>
+        <h1>手機都易用嘅排球 Fun Game 輪休分隊系統</h1>
+        <p class="lead">支援遲到出席、加人走人、記錄勝方，同顯示已休息名單。手機上會以較大按鈕、單欄操作同底部固定操作區呈現，方便場邊即時使用。</p>
         <div class="mini-grid">
-          <div class="stat"><strong>2 隊固定</strong><span class="meta">每隊 6 人</span></div>
-          <div class="stat"><strong>出席控制</strong><span class="meta">遲到可後補入池</span></div>
-          <div class="stat"><strong>較穩定狀態</strong><span class="meta">避免隔一段時間後報錯</span></div>
+          <div class="stat"><strong>出席勾選</strong><span class="meta">遲到可即時轉到場</span></div>
+          <div class="stat"><strong>勝負記錄</strong><span class="meta">敗方優先休息</span></div>
+          <div class="stat"><strong>輪休追蹤</strong><span class="meta">已休息名單清楚顯示</span></div>
         </div>
       </div>
       <div class="panel">
-        <label for="preset">快速示範名單</label>
-        <select id="preset">
-          <option value="">自行輸入</option>
-          <option value="14">14 人</option>
-          <option value="16">16 人</option>
-          <option value="18">18 人</option>
-        </select>
-        <div class="box">
+        <div class="box" style="margin-top:0;">
           <label for="newPlayers">中途新加入球員</label>
           <textarea id="newPlayers" class="tiny-area" placeholder="阿晴, 2&#10;Kelvin, 4"></textarea>
           <div class="row" style="margin-top: var(--space-3);">
@@ -74,10 +69,10 @@
               </select>
             </div>
           </div>
-          <div class="actions" style="margin-top: var(--space-3);">
+          <div class="actions mobile-stack" style="margin-top: var(--space-3);">
             <button class="btn btn-secondary" id="addPlayersBtn" type="button">加入名單池</button>
           </div>
-          <p class="hint" style="margin-top: var(--space-2);">新加入者預設會標記為「已出席」，你亦可以喺下面即時取消勾選，表示佢未到場。</p>
+          <p class="hint" style="margin-top: var(--space-2);">新加入者預設為已出席，你可於下方再取消勾選。</p>
         </div>
       </div>
     </section>
@@ -114,15 +109,22 @@
           <p class="hint" style="margin-top: var(--space-2);">至少要有 12 位已出席球員先可以產生隊伍。</p>
         </div>
 
-        <div class="actions" style="margin-top: var(--space-4);">
-          <button class="btn btn-primary" id="generateBtn" type="button">產生第 1 局</button>
-          <button class="btn btn-secondary" id="nextRoundBtn" type="button">下一局分隊</button>
-          <button class="btn btn-ghost" id="copyBtn" type="button">複製結果</button>
-          <button class="btn btn-ghost" id="resetBtn" type="button">重設循環</button>
+        <div class="sticky-actions">
+          <div class="actions mobile-stack">
+            <button class="btn btn-primary" id="generateBtn" type="button">產生第 1 局</button>
+            <button class="btn btn-secondary" id="nextRoundBtn" type="button">下一局分隊</button>
+            <button class="btn btn-ghost" id="copyBtn" type="button">複製結果</button>
+            <button class="btn btn-ghost" id="resetBtn" type="button">重設循環</button>
+          </div>
         </div>
         <p id="status" class="hint" style="margin-top: var(--space-3);">等待名單輸入。</p>
 
         <div class="summary" id="summary"></div>
+
+        <div class="box rested-box">
+          <strong>現時已休息過名單</strong>
+          <div id="restedList" class="pill-list"></div>
+        </div>
 
         <div class="box">
           <strong>現時名單池（可一鍵移除）</strong>
@@ -141,6 +143,15 @@
         <div id="teams" class="teams">
           <div class="empty">輸入名單後按「產生第 1 局」。</div>
         </div>
+        <div class="box">
+          <strong>本局勝方設定</strong>
+          <div class="winner-controls">
+            <button class="mini-btn winner-btn" id="winnerA" type="button">A 隊勝出</button>
+            <button class="mini-btn winner-btn" id="winnerB" type="button">B 隊勝出</button>
+            <button class="mini-btn" id="clearWinner" type="button">清除結果</button>
+          </div>
+          <p class="hint" id="winnerStatus" style="margin-top: var(--space-2);">未設定本局勝方；下局休息名單只會按未休息過規則選出。</p>
+        </div>
       </section>
     </main>
   </div>
@@ -149,7 +160,6 @@
     const playersEl = document.getElementById('players');
     const modeEl = document.getElementById('mode');
     const avoidPairsEl = document.getElementById('avoidPairs');
-    const presetEl = document.getElementById('preset');
     const statusEl = document.getElementById('status');
     const teamsEl = document.getElementById('teams');
     const summaryBadge = document.getElementById('summaryBadge');
@@ -158,6 +168,8 @@
     const playerPoolEl = document.getElementById('playerPool');
     const attendanceListEl = document.getElementById('attendanceList');
     const summaryEl = document.getElementById('summary');
+    const restedListEl = document.getElementById('restedList');
+    const winnerStatusEl = document.getElementById('winnerStatus');
 
     const TEAM_SIZE = 6;
     const TEAM_COUNT = 2;
@@ -166,12 +178,6 @@
     let session = null;
     let playerRegistry = [];
     let lastResult = '';
-
-    const presets = {
-      14: ['阿明,3','阿欣,2','Ken,4','May,5','Joey,3','Chris,2','Ivy,4','Mandy,3','Tom,2','Wing,4','Jason,1','Carmen,3','Eva,2','Marco,5'].join('\n'),
-      16: ['阿明,3','阿欣,2','Ken,4','May,5','Joey,3','Chris,2','Ivy,4','Mandy,3','Tom,2','Wing,4','Jason,1','Carmen,3','Eva,2','Marco,5','Luna,3','Oscar,2'].join('\n'),
-      18: ['阿明,3','阿欣,2','Ken,4','May,5','Joey,3','Chris,2','Ivy,4','Mandy,3','Tom,2','Wing,4','Jason,1','Carmen,3','Eva,2','Marco,5','Luna,3','Oscar,2','Phoebe,4','Ryan,3'].join('\n')
-    };
 
     function uid() {
       return Math.random().toString(36).slice(2, 10);
@@ -234,6 +240,7 @@
       syncSessionPlayers();
       renderAttendance();
       renderPlayerPool();
+      renderRestedList();
       updateSummary();
     }
 
@@ -255,10 +262,55 @@
       session.history = Array.isArray(session.history) ? session.history : [];
       session.lastTeams = Array.isArray(session.lastTeams) ? session.lastTeams : [];
       session.lastResters = Array.isArray(session.lastResters) ? session.lastResters.filter(id => validIds.has(id)) : [];
+      session.lastWinner = session.lastWinner === 'A' || session.lastWinner === 'B' ? session.lastWinner : null;
+      session.lastLoserTeamIds = Array.isArray(session.lastLoserTeamIds) ? session.lastLoserTeamIds.filter(id => validIds.has(id)) : [];
     }
 
     function getPresentPlayers() {
       return playerRegistry.filter(p => p.active);
+    }
+
+    function getRestedPlayers() {
+      return playerRegistry.filter(p => p.restedInCycle);
+    }
+
+    function renderRestedList() {
+      const rested = getRestedPlayers();
+      if (!rested.length) {
+        restedListEl.innerHTML = '<span class="hint">目前未有人休息過。</span>';
+        return;
+      }
+      restedListEl.innerHTML = rested.map(p => `<span class="pill rested">${p.name}</span>`).join('');
+    }
+
+    function renderWinnerState() {
+      const winnerA = document.getElementById('winnerA');
+      const winnerB = document.getElementById('winnerB');
+      const winner = session?.lastWinner || null;
+      winnerA?.classList.toggle('active', winner === 'A');
+      winnerB?.classList.toggle('active', winner === 'B');
+      if (!winner) {
+        winnerStatusEl.textContent = '未設定本局勝方；下局休息名單只會按未休息過規則選出。';
+        return;
+      }
+      winnerStatusEl.textContent = `已設定本局 ${winner} 隊勝出；下局若需要休息名單，會優先由敗方中仍未休息過的人選出。`;
+    }
+
+    function setWinner(team) {
+      const currentSession = ensureSession();
+      currentSession.lastWinner = team;
+      const loserIndex = team === 'A' ? 1 : 0;
+      currentSession.lastLoserTeamIds = currentSession.lastTeams?.[loserIndex] ? [...currentSession.lastTeams[loserIndex]] : [];
+      renderWinnerState();
+      setStatus(`已記錄本局 ${team} 隊勝出。`);
+    }
+
+    function clearWinner() {
+      const currentSession = ensureSession();
+      currentSession.lastWinner = null;
+      currentSession.lastLoserTeamIds = [];
+      renderWinnerState();
+      setStatus('已清除本局勝方設定。');
     }
 
     function ensureSession() {
@@ -268,7 +320,9 @@
           players: playerRegistry.map(p => ({ ...p })),
           history: [],
           lastTeams: [],
-          lastResters: []
+          lastResters: [],
+          lastWinner: null,
+          lastLoserTeamIds: []
         };
       }
       syncSessionPlayers();
@@ -282,10 +336,13 @@
         players: playerRegistry.map(p => ({ ...p })),
         history: [],
         lastTeams: [],
-        lastResters: []
+        lastResters: [],
+        lastWinner: null,
+        lastLoserTeamIds: []
       };
       renderAttendance();
       renderPlayerPool();
+      renderRestedList();
       updateSummary();
     }
 
@@ -317,6 +374,7 @@
       syncSessionPlayers();
       renderAttendance();
       renderPlayerPool();
+      renderRestedList();
       updateSummary();
       newPlayersEl.value = '';
       setStatus(addedCount ? `已加入 ${addedCount} 位新球員。可先確認佢哋係咪已到場。` : '新加入名單全部已存在，未有新增。');
@@ -328,6 +386,7 @@
       syncSessionPlayers();
       renderAttendance();
       renderPlayerPool();
+      renderRestedList();
       updateSummary();
       if (getPresentPlayers().length < PLAYERS_NEEDED) {
         renderEmpty('目前已出席球員少於 12 人，未能分隊。');
@@ -340,6 +399,7 @@
       syncSessionPlayers();
       renderAttendance();
       renderPlayerPool();
+      renderRestedList();
       updateSummary();
       if (!checked && getPresentPlayers().length < PLAYERS_NEEDED) {
         renderEmpty('目前已出席球員少於 12 人，請等更多人到場。');
@@ -377,10 +437,12 @@
       const present = getPresentPlayers().length;
       const restingCycle = playerRegistry.filter(p => p.restedInCycle).length;
       const pendingMustPlay = playerRegistry.filter(p => p.active && p.mustPlayNextRound).length;
+      const winner = session?.lastWinner || '未設定';
 
       summaryEl.innerHTML = `
         <div class="summary-card">總名單：<strong>${total}</strong> 人；目前出席：<strong>${present}</strong> 人。</div>
         <div class="summary-card">本輪已休息過：<strong>${restingCycle}</strong> 人；新加入而下局必上：<strong>${pendingMustPlay}</strong> 人。</div>
+        <div class="summary-card">最近一局勝方：<strong>${winner}</strong>。</div>
       `;
     }
 
@@ -428,19 +490,26 @@
         throw new Error('標記為首局必上嘅新加入者超過 12 人，請先取消部分設定。');
       }
 
-      let restPool = presentPlayers.filter(p => !p.restedInCycle && !p.mustPlayNextRound);
-      if (restPool.length < PLAYERS_NEEDED - mustPlay.length) {
+      let available = presentPlayers.filter(p => !p.mustPlayNextRound);
+      let notRested = available.filter(p => !p.restedInCycle);
+      if (notRested.length < PLAYERS_NEEDED - mustPlay.length) {
         playerRegistry = playerRegistry.map(p => presentPlayers.some(pp => pp.id === p.id) ? { ...p, restedInCycle: false } : p);
         syncSessionPlayers();
-        restPool = presentPlayers.filter(p => !p.mustPlayNextRound);
+        available = presentPlayers.filter(p => !p.mustPlayNextRound);
+        notRested = available;
       }
 
-      const shuffledRestPool = shuffle(restPool);
+      const loserPriorityIds = new Set((session?.lastLoserTeamIds || []).filter(id => notRested.some(p => p.id === id)));
+      const loserPriority = shuffle(notRested.filter(p => loserPriorityIds.has(p.id)));
+      const otherPriority = shuffle(notRested.filter(p => !loserPriorityIds.has(p.id)));
+
       const chosen = [...mustPlay];
-      for (const p of shuffledRestPool) {
-        if (chosen.some(cp => cp.id === p.id)) continue;
-        if (chosen.length >= PLAYERS_NEEDED) break;
-        chosen.push(p);
+      for (const group of [loserPriority, otherPriority]) {
+        for (const p of group) {
+          if (chosen.some(cp => cp.id === p.id)) continue;
+          if (chosen.length >= PLAYERS_NEEDED) break;
+          chosen.push(p);
+        }
       }
 
       if (chosen.length < PLAYERS_NEEDED) {
@@ -465,7 +534,14 @@
 
       const currentSession = ensureSession();
       const avoidPairs = parseAvoidPairs();
-      const candidates = buildCandidates(presentPlayers);
+      let candidates;
+      try {
+        candidates = buildCandidates(presentPlayers);
+      } catch (error) {
+        renderEmpty(error.message);
+        setStatus(error.message, true);
+        return;
+      }
       const bench = presentPlayers.filter(p => !candidates.some(c => c.id === p.id));
 
       let bestTeams = null;
@@ -507,13 +583,18 @@
         round: currentSession.round,
         teams: currentSession.lastTeams,
         resters: currentSession.lastResters,
+        winner: currentSession.lastWinner,
         timestamp: Date.now()
       });
+      currentSession.lastWinner = null;
+      currentSession.lastLoserTeamIds = [];
 
       renderTeams(bestTeams, bench, currentSession.round);
       renderPlayerPool();
       renderAttendance();
+      renderRestedList();
       updateSummary();
+      renderWinnerState();
       summaryBadge.classList.remove('hidden');
       setStatus(isFirstRound ? `第 ${currentSession.round} 局已產生。` : `已產生第 ${currentSession.round} 局。`);
     }
@@ -568,13 +649,6 @@
       navigator.clipboard.writeText(lastResult).then(() => setStatus('結果已複製。')).catch(() => setStatus('複製失敗，請手動選取。', true));
     }
 
-    presetEl.addEventListener('change', () => {
-      if (!presetEl.value) return;
-      playersEl.value = presets[presetEl.value] || '';
-      normalizePlayersFromTextarea();
-      setStatus('已載入示範名單。');
-    });
-
     playersEl.addEventListener('input', () => {
       normalizePlayersFromTextarea();
       setStatus('已更新總名單。');
@@ -601,21 +675,29 @@
       normalizePlayersFromTextarea();
       resetCycle();
       renderEmpty('已重設輪休循環，請重新產生第 1 局。');
+      renderWinnerState();
       setStatus('已重設循環。');
     });
+    document.getElementById('winnerA').addEventListener('click', () => setWinner('A'));
+    document.getElementById('winnerB').addEventListener('click', () => setWinner('B'));
+    document.getElementById('clearWinner').addEventListener('click', clearWinner);
+
     document.getElementById('selectAllPresentBtn').addEventListener('click', () => {
       playerRegistry = playerRegistry.map(p => ({ ...p, active: true }));
       syncSessionPlayers();
       renderAttendance();
       renderPlayerPool();
+      renderRestedList();
       updateSummary();
       setStatus('已全選為出席。');
     });
+
     document.getElementById('clearPresentBtn').addEventListener('click', () => {
       playerRegistry = playerRegistry.map(p => ({ ...p, active: false }));
       syncSessionPlayers();
       renderAttendance();
       renderPlayerPool();
+      renderRestedList();
       updateSummary();
       renderEmpty('目前未有已出席球員。');
       setStatus('已將全部人設為未到。');
@@ -635,6 +717,8 @@
     })();
 
     normalizePlayersFromTextarea();
+    renderRestedList();
+    renderWinnerState();
     renderEmpty('輸入名單後按「產生第 1 局」。');
   </script>
 </body>
