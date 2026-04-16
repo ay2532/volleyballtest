@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>排球 Fun Game 輪休分隊系統</title>
+  <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+  <style>
+    :root,[data-theme="light"]{--text-xs:clamp(.75rem,.7rem + .25vw,.875rem);--text-sm:clamp(.875rem,.8rem + .35vw,1rem);--text-base:clamp(1rem,.95rem + .25vw,1.125rem);--text-lg:clamp(1.125rem,1rem + .75vw,1.5rem);--text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);--space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-5:1.25rem;--space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;--radius-md:.5rem;--radius-lg:.75rem;--radius-xl:1rem;--radius-full:9999px;--color-bg:#f7f6f2;--color-surface:#f9f8f5;--color-surface-2:#fbfbf9;--color-border:#d4d1ca;--color-divider:#dcd9d5;--color-text:#28251d;--color-text-muted:#6d6b66;--color-primary:#01696f;--color-primary-hover:#0c4e54;--color-primary-soft:#cedcd8;--color-success:#437a22;--color-warning:#da7101;--color-error:#a12c7b;--shadow-sm:0 1px 2px rgb(40 37 29 / .06);--shadow-md:0 4px 12px rgb(40 37 29 / .08);--font-body:'General Sans','Inter',sans-serif;--transition:180ms cubic-bezier(.16,1,.3,1)}
+    [data-theme="dark"]{--color-bg:#171614;--color-surface:#1c1b19;--color-surface-2:#201f1d;--color-border:#393836;--color-divider:#262523;--color-text:#cdccca;--color-text-muted:#a4a39f;--color-primary:#4f98a3;--color-primary-hover:#227f8b;--color-primary-soft:#313b3b;--color-success:#6daa45;--color-warning:#fdab43;--color-error:#d163a7;--shadow-sm:0 1px 2px rgb(0 0 0 / .20);--shadow-md:0 4px 12px rgb(0 0 0 / .30)}
+    *{box-sizing:border-box;margin:0;padding:0} html{-webkit-text-size-adjust:none;text-size-adjust:none} body{min-height:100dvh;font-family:var(--font-body);font-size:var(--text-base);line-height:1.6;color:var(--color-text);background:var(--color-bg)} img,svg{display:block;max-width:100%} button,input,textarea,select{font:inherit;color:inherit} button{cursor:pointer;border:none;transition:background var(--transition),border-color var(--transition),color var(--transition),box-shadow var(--transition)}
+    .shell{max-width:1240px;margin:0 auto;padding:var(--space-4)} header{display:flex;justify-content:space-between;align-items:center;gap:var(--space-4);padding:var(--space-4) 0 var(--space-6)} .brand{display:flex;align-items:center;gap:var(--space-3);font-weight:700}.brand svg{width:2rem;height:2rem;color:var(--color-primary)}
+    .theme-toggle,.btn,.mini-btn,.icon-btn{min-height:44px}.theme-toggle,.icon-btn{min-width:44px;border-radius:var(--radius-full);background:var(--color-surface);border:1px solid color-mix(in srgb,var(--color-text) 12%,transparent)}
+    .hero,main{display:grid;grid-template-columns:1.05fr .95fr;gap:var(--space-4)} .panel,.team{background:var(--color-surface);border:1px solid color-mix(in srgb,var(--color-text) 10%,transparent);border-radius:var(--radius-xl);box-shadow:var(--shadow-sm)} .panel{padding:var(--space-5)}
+    h1{font-size:var(--text-xl);line-height:1.15;margin-bottom:var(--space-3)} h2{font-size:var(--text-lg);line-height:1.2} .lead,.meta,.hint{color:var(--color-text-muted)}
+    .mini-grid,.teams,.stack{display:grid;gap:var(--space-3)} .mini-grid{grid-template-columns:repeat(3,1fr);margin-top:var(--space-5)} .stat{background:var(--color-surface-2);padding:var(--space-3);border-radius:var(--radius-lg)} .stat strong{display:block;font-size:var(--text-lg)}
+    label,.subhead{display:block;font-weight:700;margin-bottom:var(--space-2)} textarea,select,input{width:100%;border:1px solid var(--color-border);background:var(--color-surface-2);border-radius:var(--radius-lg);padding:var(--space-3) var(--space-4)} textarea{min-height:170px;resize:vertical}.small-area{min-height:92px}.tiny-area{min-height:78px}
+    .row,.actions,.inline,.toolbar{display:flex;flex-wrap:wrap;gap:var(--space-3)} .row>*{flex:1 1 240px}
+    .btn{padding:var(--space-3) var(--space-4);border-radius:var(--radius-full);font-weight:700}.btn-primary{background:var(--color-primary);color:#fff}.btn-primary:hover{background:var(--color-primary-hover)}.btn-secondary{background:var(--color-primary-soft);color:var(--color-text)}.btn-ghost{background:transparent;color:var(--color-text);border:1px solid color-mix(in srgb,var(--color-text) 12%,transparent)}
+    .mini-btn{min-height:36px;padding:.45rem .8rem;border-radius:var(--radius-full);background:transparent;border:1px solid color-mix(in srgb,var(--color-text) 14%,transparent);color:var(--color-text)}
+    .team-head{display:flex;justify-content:space-between;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:color-mix(in srgb,var(--color-primary) 10%,var(--color-surface));border-bottom:1px solid color-mix(in srgb,var(--color-text) 10%,transparent)}
+    .team ul{list-style:none;padding:var(--space-3) var(--space-4) var(--space-4);display:grid;gap:var(--space-2)} .team li{display:flex;justify-content:space-between;align-items:center;gap:var(--space-3);padding:var(--space-2) var(--space-3);background:var(--color-surface-2);border-radius:var(--radius-md)}
+    .badge{display:inline-flex;align-items:center;padding:.25rem .7rem;border-radius:var(--radius-full);background:color-mix(in srgb,var(--color-success) 14%,transparent);color:var(--color-success);font-size:var(--text-sm);font-weight:700}.hidden{display:none}.empty{padding:var(--space-8);text-align:center;color:var(--color-text-muted)}.warn{color:var(--color-warning)}.error{color:var(--color-error)}
+    .box{margin-top:var(--space-4);padding:var(--space-4);background:var(--color-surface-2);border-radius:var(--radius-lg);border:1px dashed color-mix(in srgb,var(--color-text) 18%,transparent)}
+    .pill-list{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-top:var(--space-2)} .pill{display:inline-flex;align-items:center;gap:.45rem;padding:.35rem .75rem;border-radius:var(--radius-full);background:var(--color-primary-soft);font-size:var(--text-sm);border:1px solid color-mix(in srgb,var(--color-text) 10%,transparent)} .pill button{min-height:auto;padding:0;border:none;background:none;color:var(--color-warning);font-weight:700}
+    .pill.active{background:color-mix(in srgb,var(--color-success) 16%,transparent);color:var(--color-success)} .pill.inactive{background:color-mix(in srgb,var(--color-warning) 14%,transparent);color:var(--color-warning)} .pill.rested{outline:1px solid color-mix(in srgb,var(--color-success) 28%,transparent)} .pill.newbie{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--color-primary) 30%,transparent)}
+    .output-top{display:flex;justify-content:space-between;align-items:center;gap:var(--space-3);margin-bottom:var(--space-4)}
+    .attendance-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--space-2);margin-top:var(--space-3)} .check-item{display:flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-3);border-radius:var(--radius-lg);background:var(--color-surface);border:1px solid color-mix(in srgb,var(--color-text) 10%,transparent);min-height:44px} .check-item input{width:auto}
+    .summary{display:grid;gap:var(--space-2);margin-top:var(--space-4)} .summary-card{padding:var(--space-3);border-radius:var(--radius-lg);background:var(--color-surface-2);border:1px solid color-mix(in srgb,var(--color-text) 8%,transparent)}
+    .result-actions{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-top:var(--space-3)}
+    @media (max-width:980px){.hero,main,.mini-grid{grid-template-columns:1fr}.output-top{flex-direction:column;align-items:flex-start}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div class="brand">
+        <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+          <circle cx="32" cy="32" r="24" stroke="currentColor" stroke-width="4"/>
+          <path d="M17 23c7 2 15 7 20 16M39 13c1 8-1 18-10 26M49 23c-8-1-18 2-26 11" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+        </svg>
+        <span>排球 Fun Game 輪休分隊系統</span>
+      </div>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="切換深淺模式">🌙</button>
+    </header>
+
+    <section class="hero">
+      <div class="panel">
+        <h1>支援遲到出席、加人走人，同更穩定嘅下一局分隊</h1>
+        <p class="lead">系統固定每局安排 2 隊、每隊 6 人。你而家可以先建立總名單，再勾選當前實際出席嘅人；遲到球員到場後，只需切返出席狀態再排下一局。</p>
+        <div class="mini-grid">
+          <div class="stat"><strong>2 隊固定</strong><span class="meta">每隊 6 人</span></div>
+          <div class="stat"><strong>出席控制</strong><span class="meta">遲到可後補入池</span></div>
+          <div class="stat"><strong>較穩定狀態</strong><span class="meta">避免隔一段時間後報錯</span></div>
+        </div>
+      </div>
+      <div class="panel">
+        <label for="preset">快速示範名單</label>
+        <select id="preset">
+          <option value="">自行輸入</option>
+          <option value="14">14 人</option>
+          <option value="16">16 人</option>
+          <option value="18">18 人</option>
+        </select>
+        <div class="box">
+          <label for="newPlayers">中途新加入球員</label>
+          <textarea id="newPlayers" class="tiny-area" placeholder="阿晴, 2&#10;Kelvin, 4"></textarea>
+          <div class="row" style="margin-top: var(--space-3);">
+            <div>
+              <label for="joinPolicy">新加入者首局安排</label>
+              <select id="joinPolicy">
+                <option value="normal">跟一般規則</option>
+                <option value="mustPlay">首局一定上場</option>
+              </select>
+            </div>
+          </div>
+          <div class="actions" style="margin-top: var(--space-3);">
+            <button class="btn btn-secondary" id="addPlayersBtn" type="button">加入名單池</button>
+          </div>
+          <p class="hint" style="margin-top: var(--space-2);">新加入者預設會標記為「已出席」，你亦可以喺下面即時取消勾選，表示佢未到場。</p>
+        </div>
+      </div>
+    </section>
+
+    <main>
+      <section class="panel">
+        <label for="players">總球員名單</label>
+        <textarea id="players" placeholder="阿明, 3&#10;阿欣, 2&#10;Ken, 4&#10;May, 5&#10;Joey&#10;...至少 12 人"></textarea>
+        <p class="hint" style="margin-top: var(--space-2);">先輸入總名單，再於下方勾選今刻真係到場嘅人。未到場者會保留在池內，但唔會參與今局分隊。</p>
+
+        <div class="row" style="margin-top: var(--space-4);">
+          <div>
+            <label for="mode">分隊模式</label>
+            <select id="mode">
+              <option value="random">純隨機</option>
+              <option value="balanced">平均實力</option>
+            </select>
+          </div>
+          <div>
+            <label for="avoidPairs">避免同隊名單（可選）</label>
+            <textarea id="avoidPairs" class="small-area" placeholder="阿明 - 阿欣&#10;Ken - May"></textarea>
+          </div>
+        </div>
+
+        <div class="box">
+          <div class="toolbar" style="justify-content:space-between;align-items:center;">
+            <strong>當前出席名單</strong>
+            <div class="inline">
+              <button class="mini-btn" id="selectAllPresentBtn" type="button">全選出席</button>
+              <button class="mini-btn" id="clearPresentBtn" type="button">全部未到</button>
+            </div>
+          </div>
+          <div id="attendanceList" class="attendance-grid"></div>
+          <p class="hint" style="margin-top: var(--space-2);">至少要有 12 位已出席球員先可以產生隊伍。</p>
+        </div>
+
+        <div class="actions" style="margin-top: var(--space-4);">
+          <button class="btn btn-primary" id="generateBtn" type="button">產生第 1 局</button>
+          <button class="btn btn-secondary" id="nextRoundBtn" type="button">下一局分隊</button>
+          <button class="btn btn-ghost" id="copyBtn" type="button">複製結果</button>
+          <button class="btn btn-ghost" id="resetBtn" type="button">重設循環</button>
+        </div>
+        <p id="status" class="hint" style="margin-top: var(--space-3);">等待名單輸入。</p>
+
+        <div class="summary" id="summary"></div>
+
+        <div class="box">
+          <strong>現時名單池（可一鍵移除）</strong>
+          <div id="playerPool" class="pill-list"></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="output-top">
+          <div>
+            <h2>本局安排</h2>
+            <p class="meta">每完成一局，可直接按「下一局分隊」。如期間有人到場或離開，只需更新出席狀態或移除名單即可。</p>
+          </div>
+          <span class="badge hidden" id="summaryBadge">已完成分隊</span>
+        </div>
+        <div id="teams" class="teams">
+          <div class="empty">輸入名單後按「產生第 1 局」。</div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const playersEl = document.getElementById('players');
+    const modeEl = document.getElementById('mode');
+    const avoidPairsEl = document.getElementById('avoidPairs');
+    const presetEl = document.getElementById('preset');
+    const statusEl = document.getElementById('status');
+    const teamsEl = document.getElementById('teams');
+    const summaryBadge = document.getElementById('summaryBadge');
+    const newPlayersEl = document.getElementById('newPlayers');
+    const joinPolicyEl = document.getElementById('joinPolicy');
+    const playerPoolEl = document.getElementById('playerPool');
+    const attendanceListEl = document.getElementById('attendanceList');
+    const summaryEl = document.getElementById('summary');
+
+    const TEAM_SIZE = 6;
+    const TEAM_COUNT = 2;
+    const PLAYERS_NEEDED = TEAM_SIZE * TEAM_COUNT;
+
+    let session = null;
+    let playerRegistry = [];
+    let lastResult = '';
+
+    const presets = {
+      14: ['阿明,3','阿欣,2','Ken,4','May,5','Joey,3','Chris,2','Ivy,4','Mandy,3','Tom,2','Wing,4','Jason,1','Carmen,3','Eva,2','Marco,5'].join('\n'),
+      16: ['阿明,3','阿欣,2','Ken,4','May,5','Joey,3','Chris,2','Ivy,4','Mandy,3','Tom,2','Wing,4','Jason,1','Carmen,3','Eva,2','Marco,5','Luna,3','Oscar,2'].join('\n'),
+      18: ['阿明,3','阿欣,2','Ken,4','May,5','Joey,3','Chris,2','Ivy,4','Mandy,3','Tom,2','Wing,4','Jason,1','Carmen,3','Eva,2','Marco,5','Luna,3','Oscar,2','Phoebe,4','Ryan,3'].join('\n')
+    };
+
+    function uid() {
+      return Math.random().toString(36).slice(2, 10);
+    }
+
+    function shuffle(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function parsePlayerLines(text) {
+      return text.split('\n').map(v => v.trim()).filter(Boolean).map(line => {
+        const parts = line.split(',').map(v => v.trim());
+        const skill = Number(parts[1]);
+        return { name: parts[0], skill: Number.isFinite(skill) && skill > 0 ? skill : null };
+      }).filter(p => p.name);
+    }
+
+    function parseAvoidPairs() {
+      return avoidPairsEl.value.split('\n').map(v => v.trim()).filter(Boolean).map(line => line.split('-').map(v => v.trim())).filter(pair => pair.length === 2 && pair[0] && pair[1]);
+    }
+
+    function countConflicts(teams, avoidPairs) {
+      let conflicts = 0;
+      for (const [a, b] of avoidPairs) {
+        for (const team of teams) {
+          const names = team.map(p => p.name);
+          if (names.includes(a) && names.includes(b)) conflicts += 1;
+        }
+      }
+      return conflicts;
+    }
+
+    function normalizePlayersFromTextarea() {
+      const parsed = parsePlayerLines(playersEl.value);
+      const next = [];
+      const nameSeen = new Set();
+
+      for (const item of parsed) {
+        if (nameSeen.has(item.name)) continue;
+        nameSeen.add(item.name);
+        const existing = playerRegistry.find(p => p.name === item.name);
+        next.push({
+          id: existing?.id || uid(),
+          name: item.name,
+          skill: item.skill,
+          active: existing ? existing.active : true,
+          restedInCycle: existing ? existing.restedInCycle : false,
+          newcomerPending: existing ? existing.newcomerPending : false,
+          mustPlayNextRound: existing ? existing.mustPlayNextRound : false,
+          joinRound: existing ? existing.joinRound : null
+        });
+      }
+
+      playerRegistry = next;
+      syncSessionPlayers();
+      renderAttendance();
+      renderPlayerPool();
+      updateSummary();
+    }
+
+    function syncTextareaFromRegistry() {
+      playersEl.value = playerRegistry.map(p => p.skill ? `${p.name}, ${p.skill}` : p.name).join('\n');
+    }
+
+    function syncSessionPlayers() {
+      if (!session) return;
+      const registryMap = new Map(playerRegistry.map(p => [p.id, p]));
+      session.players = session.players.filter(p => registryMap.has(p.id)).map(old => ({ ...registryMap.get(old.id), restedInCycle: old.restedInCycle, newcomerPending: old.newcomerPending, mustPlayNextRound: old.mustPlayNextRound, joinRound: old.joinRound }));
+      for (const p of playerRegistry) {
+        if (!session.players.some(sp => sp.id === p.id)) {
+          session.players.push({ ...p });
+        }
+      }
+      const validIds = new Set(session.players.map(p => p.id));
+      session.round = Number.isFinite(session.round) ? session.round : 0;
+      session.history = Array.isArray(session.history) ? session.history : [];
+      session.lastTeams = Array.isArray(session.lastTeams) ? session.lastTeams : [];
+      session.lastResters = Array.isArray(session.lastResters) ? session.lastResters.filter(id => validIds.has(id)) : [];
+    }
+
+    function getPresentPlayers() {
+      return playerRegistry.filter(p => p.active);
+    }
+
+    function ensureSession() {
+      if (!session) {
+        session = {
+          round: 0,
+          players: playerRegistry.map(p => ({ ...p })),
+          history: [],
+          lastTeams: [],
+          lastResters: []
+        };
+      }
+      syncSessionPlayers();
+      return session;
+    }
+
+    function resetCycle({ keepRound = false } = {}) {
+      playerRegistry = playerRegistry.map(p => ({ ...p, restedInCycle: false, newcomerPending: false, mustPlayNextRound: false, joinRound: null }));
+      session = {
+        round: keepRound ? (session?.round || 0) : 0,
+        players: playerRegistry.map(p => ({ ...p })),
+        history: [],
+        lastTeams: [],
+        lastResters: []
+      };
+      renderAttendance();
+      renderPlayerPool();
+      updateSummary();
+    }
+
+    function addPlayers() {
+      const newcomers = parsePlayerLines(newPlayersEl.value);
+      if (!newcomers.length) {
+        setStatus('請先輸入要加入嘅球員。', true);
+        return;
+      }
+
+      normalizePlayersFromTextarea();
+      let addedCount = 0;
+      for (const p of newcomers) {
+        if (playerRegistry.some(existing => existing.name === p.name)) continue;
+        playerRegistry.push({
+          id: uid(),
+          name: p.name,
+          skill: p.skill,
+          active: true,
+          restedInCycle: false,
+          newcomerPending: true,
+          mustPlayNextRound: joinPolicyEl.value === 'mustPlay',
+          joinRound: (session?.round || 0) + 1
+        });
+        addedCount += 1;
+      }
+
+      syncTextareaFromRegistry();
+      syncSessionPlayers();
+      renderAttendance();
+      renderPlayerPool();
+      updateSummary();
+      newPlayersEl.value = '';
+      setStatus(addedCount ? `已加入 ${addedCount} 位新球員。可先確認佢哋係咪已到場。` : '新加入名單全部已存在，未有新增。');
+    }
+
+    function removePlayer(id) {
+      playerRegistry = playerRegistry.filter(p => p.id !== id);
+      syncTextareaFromRegistry();
+      syncSessionPlayers();
+      renderAttendance();
+      renderPlayerPool();
+      updateSummary();
+      if (getPresentPlayers().length < PLAYERS_NEEDED) {
+        renderEmpty('目前已出席球員少於 12 人，未能分隊。');
+      }
+      setStatus('已移除球員。');
+    }
+
+    function toggleActive(id, checked) {
+      playerRegistry = playerRegistry.map(p => p.id === id ? { ...p, active: checked } : p);
+      syncSessionPlayers();
+      renderAttendance();
+      renderPlayerPool();
+      updateSummary();
+      if (!checked && getPresentPlayers().length < PLAYERS_NEEDED) {
+        renderEmpty('目前已出席球員少於 12 人，請等更多人到場。');
+      }
+    }
+
+    function renderAttendance() {
+      if (!playerRegistry.length) {
+        attendanceListEl.innerHTML = '<div class="empty">輸入總名單後，呢度會顯示出席勾選。</div>';
+        return;
+      }
+      attendanceListEl.innerHTML = playerRegistry.map(p => `
+        <label class="check-item">
+          <input type="checkbox" data-active-id="${p.id}" ${p.active ? 'checked' : ''} />
+          <span>${p.name}${p.skill ? ` · ${p.skill}` : ''}</span>
+        </label>
+      `).join('');
+    }
+
+    function renderPlayerPool() {
+      if (!playerRegistry.length) {
+        playerPoolEl.innerHTML = '<span class="hint">未有球員。</span>';
+        return;
+      }
+      playerPoolEl.innerHTML = playerRegistry.map(p => `
+        <span class="pill ${p.active ? 'active' : 'inactive'} ${p.restedInCycle ? 'rested' : ''} ${p.newcomerPending ? 'newbie' : ''}">
+          <span>${p.name}${p.active ? ' · 到場' : ' · 未到'}${p.mustPlayNextRound ? ' · 首局必上' : ''}</span>
+          <button type="button" data-remove-id="${p.id}" aria-label="移除 ${p.name}">×</button>
+        </span>
+      `).join('');
+    }
+
+    function updateSummary() {
+      const total = playerRegistry.length;
+      const present = getPresentPlayers().length;
+      const restingCycle = playerRegistry.filter(p => p.restedInCycle).length;
+      const pendingMustPlay = playerRegistry.filter(p => p.active && p.mustPlayNextRound).length;
+
+      summaryEl.innerHTML = `
+        <div class="summary-card">總名單：<strong>${total}</strong> 人；目前出席：<strong>${present}</strong> 人。</div>
+        <div class="summary-card">本輪已休息過：<strong>${restingCycle}</strong> 人；新加入而下局必上：<strong>${pendingMustPlay}</strong> 人。</div>
+      `;
+    }
+
+    function setStatus(text, isError = false) {
+      statusEl.textContent = text;
+      statusEl.className = isError ? 'error' : 'hint';
+    }
+
+    function renderEmpty(message) {
+      summaryBadge.classList.add('hidden');
+      teamsEl.innerHTML = `<div class="empty">${message}</div>`;
+      lastResult = '';
+    }
+
+    function splitTeamsRandom(players) {
+      const selected = shuffle(players).slice(0, PLAYERS_NEEDED);
+      return [selected.slice(0, TEAM_SIZE), selected.slice(TEAM_SIZE, PLAYERS_NEEDED)];
+    }
+
+    function splitTeamsBalanced(players) {
+      const sorted = [...players].sort((a, b) => (b.skill || 0) - (a.skill || 0));
+      const teamA = [];
+      const teamB = [];
+      let sumA = 0;
+      let sumB = 0;
+      for (const p of sorted) {
+        if (teamA.length >= TEAM_SIZE) {
+          teamB.push(p); sumB += p.skill || 0; continue;
+        }
+        if (teamB.length >= TEAM_SIZE) {
+          teamA.push(p); sumA += p.skill || 0; continue;
+        }
+        if (sumA <= sumB) {
+          teamA.push(p); sumA += p.skill || 0;
+        } else {
+          teamB.push(p); sumB += p.skill || 0;
+        }
+      }
+      return [teamA, teamB];
+    }
+
+    function buildCandidates(presentPlayers) {
+      const mustPlay = presentPlayers.filter(p => p.mustPlayNextRound);
+      if (mustPlay.length > PLAYERS_NEEDED) {
+        throw new Error('標記為首局必上嘅新加入者超過 12 人，請先取消部分設定。');
+      }
+
+      let restPool = presentPlayers.filter(p => !p.restedInCycle && !p.mustPlayNextRound);
+      if (restPool.length < PLAYERS_NEEDED - mustPlay.length) {
+        playerRegistry = playerRegistry.map(p => presentPlayers.some(pp => pp.id === p.id) ? { ...p, restedInCycle: false } : p);
+        syncSessionPlayers();
+        restPool = presentPlayers.filter(p => !p.mustPlayNextRound);
+      }
+
+      const shuffledRestPool = shuffle(restPool);
+      const chosen = [...mustPlay];
+      for (const p of shuffledRestPool) {
+        if (chosen.some(cp => cp.id === p.id)) continue;
+        if (chosen.length >= PLAYERS_NEEDED) break;
+        chosen.push(p);
+      }
+
+      if (chosen.length < PLAYERS_NEEDED) {
+        const fallback = shuffle(presentPlayers.filter(p => !chosen.some(cp => cp.id === p.id)));
+        for (const p of fallback) {
+          if (chosen.length >= PLAYERS_NEEDED) break;
+          chosen.push(p);
+        }
+      }
+
+      return chosen;
+    }
+
+    function generateRound(isFirstRound = false) {
+      normalizePlayersFromTextarea();
+      const presentPlayers = getPresentPlayers();
+      if (presentPlayers.length < PLAYERS_NEEDED) {
+        renderEmpty('目前已出席球員不足 12 人。');
+        setStatus(`至少需要 ${PLAYERS_NEEDED} 位已出席球員，目前只有 ${presentPlayers.length} 位。`, true);
+        return;
+      }
+
+      const currentSession = ensureSession();
+      const avoidPairs = parseAvoidPairs();
+      const candidates = buildCandidates(presentPlayers);
+      const bench = presentPlayers.filter(p => !candidates.some(c => c.id === p.id));
+
+      let bestTeams = null;
+      let bestScore = Infinity;
+      for (let i = 0; i < 120; i++) {
+        const base = modeEl.value === 'balanced' ? splitTeamsBalanced(shuffle(candidates)) : splitTeamsRandom(candidates);
+        const conflictScore = countConflicts(base, avoidPairs) * 1000;
+        const diff = Math.abs(base[0].reduce((s, p) => s + (p.skill || 0), 0) - base[1].reduce((s, p) => s + (p.skill || 0), 0));
+        const score = conflictScore + diff;
+        if (score < bestScore) {
+          bestScore = score;
+          bestTeams = base;
+        }
+        if (score === 0) break;
+      }
+
+      if (!bestTeams) {
+        renderEmpty('未能產生隊伍，請再試一次。');
+        setStatus('分隊失敗，請再按一次。', true);
+        return;
+      }
+
+      playerRegistry = playerRegistry.map(p => {
+        const played = bestTeams.flat().some(tp => tp.id === p.id);
+        const rested = bench.some(bp => bp.id === p.id);
+        return {
+          ...p,
+          restedInCycle: rested ? true : p.restedInCycle,
+          newcomerPending: played ? false : p.newcomerPending,
+          mustPlayNextRound: played ? false : p.mustPlayNextRound
+        };
+      });
+      syncSessionPlayers();
+
+      currentSession.round += 1;
+      currentSession.lastTeams = bestTeams.map(team => team.map(p => p.id));
+      currentSession.lastResters = bench.map(p => p.id);
+      currentSession.history.push({
+        round: currentSession.round,
+        teams: currentSession.lastTeams,
+        resters: currentSession.lastResters,
+        timestamp: Date.now()
+      });
+
+      renderTeams(bestTeams, bench, currentSession.round);
+      renderPlayerPool();
+      renderAttendance();
+      updateSummary();
+      summaryBadge.classList.remove('hidden');
+      setStatus(isFirstRound ? `第 ${currentSession.round} 局已產生。` : `已產生第 ${currentSession.round} 局。`);
+    }
+
+    function renderTeams(teams, bench, roundNumber) {
+      const teamNames = ['A 隊', 'B 隊'];
+      const html = teams.map((team, index) => {
+        const sum = team.reduce((s, p) => s + (p.skill || 0), 0);
+        return `
+          <article class="team">
+            <div class="team-head">
+              <strong>第 ${roundNumber} 局 · ${teamNames[index]}</strong>
+              <span class="meta">總分 ${sum}</span>
+            </div>
+            <ul>
+              ${team.map(player => `<li><span>${player.name}</span><span>${player.skill ?? '-'}</span></li>`).join('')}
+            </ul>
+          </article>
+        `;
+      }).join('');
+
+      const benchBlock = `
+        <article class="team">
+          <div class="team-head">
+            <strong>休息名單</strong>
+            <span class="meta">${bench.length} 人</span>
+          </div>
+          <ul>
+            ${bench.length ? bench.map(player => `<li><span>${player.name}</span><span>${player.skill ?? '-'}</span></li>`).join('') : '<li><span>今局無人休息</span><span>-</span></li>'}
+          </ul>
+        </article>
+      `;
+
+      teamsEl.innerHTML = html + benchBlock;
+
+      const lines = [`第 ${roundNumber} 局`];
+      teams.forEach((team, idx) => {
+        lines.push(`${teamNames[idx]}：`);
+        team.forEach(player => lines.push(`- ${player.name}${player.skill ? ` (${player.skill})` : ''}`));
+      });
+      lines.push('休息：');
+      if (bench.length) bench.forEach(player => lines.push(`- ${player.name}${player.skill ? ` (${player.skill})` : ''}`));
+      else lines.push('- 無');
+      lastResult = lines.join('\n');
+    }
+
+    function copyResult() {
+      if (!lastResult) {
+        setStatus('暫時未有可複製結果。', true);
+        return;
+      }
+      navigator.clipboard.writeText(lastResult).then(() => setStatus('結果已複製。')).catch(() => setStatus('複製失敗，請手動選取。', true));
+    }
+
+    presetEl.addEventListener('change', () => {
+      if (!presetEl.value) return;
+      playersEl.value = presets[presetEl.value] || '';
+      normalizePlayersFromTextarea();
+      setStatus('已載入示範名單。');
+    });
+
+    playersEl.addEventListener('input', () => {
+      normalizePlayersFromTextarea();
+      setStatus('已更新總名單。');
+    });
+
+    attendanceListEl.addEventListener('change', (event) => {
+      const id = event.target?.dataset?.activeId;
+      if (!id) return;
+      toggleActive(id, event.target.checked);
+      setStatus('已更新出席狀態。');
+    });
+
+    playerPoolEl.addEventListener('click', (event) => {
+      const id = event.target?.dataset?.removeId;
+      if (!id) return;
+      removePlayer(id);
+    });
+
+    document.getElementById('addPlayersBtn').addEventListener('click', addPlayers);
+    document.getElementById('generateBtn').addEventListener('click', () => generateRound(true));
+    document.getElementById('nextRoundBtn').addEventListener('click', () => generateRound(false));
+    document.getElementById('copyBtn').addEventListener('click', copyResult);
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      normalizePlayersFromTextarea();
+      resetCycle();
+      renderEmpty('已重設輪休循環，請重新產生第 1 局。');
+      setStatus('已重設循環。');
+    });
+    document.getElementById('selectAllPresentBtn').addEventListener('click', () => {
+      playerRegistry = playerRegistry.map(p => ({ ...p, active: true }));
+      syncSessionPlayers();
+      renderAttendance();
+      renderPlayerPool();
+      updateSummary();
+      setStatus('已全選為出席。');
+    });
+    document.getElementById('clearPresentBtn').addEventListener('click', () => {
+      playerRegistry = playerRegistry.map(p => ({ ...p, active: false }));
+      syncSessionPlayers();
+      renderAttendance();
+      renderPlayerPool();
+      updateSummary();
+      renderEmpty('目前未有已出席球員。');
+      setStatus('已將全部人設為未到。');
+    });
+
+    (function () {
+      const toggle = document.querySelector('[data-theme-toggle]');
+      const root = document.documentElement;
+      let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      root.setAttribute('data-theme', theme);
+      toggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+      toggle.addEventListener('click', () => {
+        theme = theme === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', theme);
+        toggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+      });
+    })();
+
+    normalizePlayersFromTextarea();
+    renderEmpty('輸入名單後按「產生第 1 局」。');
+  </script>
+</body>
+</html>
