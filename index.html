@@ -698,12 +698,15 @@
       const scored = [...availablePlayers].map(player => {
         const hadNoRest = player.restCount === 0 ? 1 : 0;
         const wasLoser = loserIds.has(player.id) ? 1 : 0;
-        const playMinusRest = player.playCount - player.restCount;
+	const playBias = player.playCount;
+        const restBias = player.restCount;
+	const playMinusRest = player.playCount - player.restCount;
         const teamBalanceGap = Math.abs(player.teamACount - player.teamBCount);
         return {
           player,
           score: [
-            player.restCount,
+            -playBias,
+            -restBias,
             -hadNoRest,
             -wasLoser,
             -playMinusRest,
@@ -877,7 +880,7 @@
       }
 
       const headRow = document.createElement('tr');
-      headRow.innerHTML = `<th>球員</th>${Array.from({ length: state.round }, (_, i) => `<th>第 ${i + 1} 局</th>`).join('')}<th>休息次數</th>`;
+      headRow.innerHTML = `<th>球員</th>${Array.from({ length: state.round }, (_, i) => `<th>第 ${i + 1} 局</th>`).join('')}<th>出賽次數</th><th>休息次數</th>`;
       els.historyHead.appendChild(headRow);
 
       const players = [...state.players].sort((a, b) => a.name.localeCompare(b.name, 'zh-Hant'));
@@ -893,7 +896,8 @@
           else if (status === 'NA') cells += '<td><span class="cell-tag cell-na">未到</span></td>';
           else cells += '<td><span class="cell-tag cell-na">—</span></td>';
         }
-        cells += `<td>${player.restCount}</td>`;
+        cells += `<td>${player.playCount}</td>`;
+	cells += `<td>${player.restCount}</td>`;
         tr.innerHTML = cells;
         els.historyBody.appendChild(tr);
       });
