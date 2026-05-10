@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>排球 Fun Game 輪休分隊系統 v2</title>
+  <title>排球 Fun Game 輪休分隊系統 v3</title>
   <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
   <style>
     :root, [data-theme="light"] {
@@ -344,6 +344,15 @@
       display: none;
     }
     .notice.show { display: block; }
+
+    /* ── [NEW] Save indicator ── */
+    .save-indicator {
+      font-size: var(--text-xs);
+      color: var(--color-text-faint);
+      text-align: right;
+      margin-top: var(--space-2);
+    }
+
     .summary {
       display: grid;
       gap: var(--space-3);
@@ -452,7 +461,7 @@
         <div>
           <h1>排球 Fun Game 輪休分隊系統</h1>
           <p>手機友善、即時分隊、輪休更平均。</p>
-		  <p>最後更新：20260510 12：31</p>
+		  <p>最後更新：20260510 12:42</p>
         </div>
       </div>
       <button class="theme-btn" id="themeToggle" aria-label="切換深淺色模式">🌙</button>
@@ -482,6 +491,20 @@
       <div class="notice" id="noticeBox"></div>
     </section>
 
+    <!-- [NEW] Data persistence card -->
+    <section class="card">
+      <h2>資料備份與還原</h2>
+      <p class="helper">系統會自動把所有資料儲存於本機瀏覽器，重新載入頁面後會自動還原。如需換裝置或作手動備份，可匯出／匯入 JSON 檔案。</p>
+      <div class="actions">
+        <button class="btn btn-secondary" id="exportBtn">📤 匯出備份 JSON</button>
+        <label class="btn btn-secondary" style="display:flex;align-items:center;justify-content:center;cursor:pointer;">
+          📥 匯入備份 JSON
+          <input type="file" id="importFile" accept=".json" style="display:none;">
+        </label>
+      </div>
+      <div class="save-indicator" id="saveIndicator">尚未有自動儲存記錄。</div>
+    </section>
+
     <section class="card">
       <h2>第二部分｜產生分隊名單</h2>
       <p class="helper">系統會產生 A、B 兩隊各 6 人，其餘列為本局輪休。下一局會優先考慮上局戰敗者，但同時盡量保持整體休息次數平均。</p>
@@ -498,7 +521,7 @@
           <label class="radio-card"><input type="radio" name="winner" value="A"> A 隊勝</label>
           <label class="radio-card"><input type="radio" name="winner" value="B"> B 隊勝</label>
         </div>
-        <div class="tiny">公平輪休邏輯：先看休息次數較少者，再考慮上局戰敗隊與從未休息者，避免長期偏向同一批人輪休。</div>
+        <div class="tiny">公平輪休邏輯：先看休息次數較少者，再考慮上局戰敗隊與從未休息者，避免長期偏向同一批人輪休。A/B 隊分配以完全隨機方式進行。</div>
       </div>
     </section>
 
@@ -565,6 +588,9 @@
   </div>
 
   <script>
+    // ─────────────────────────────────────────────
+    // State
+    // ─────────────────────────────────────────────
     const state = {
       players: [],
       round: 0,
@@ -590,11 +616,89 @@
       fairnessInfo: document.getElementById('fairnessInfo'),
       historyHead: document.getElementById('historyHead'),
       historyBody: document.getElementById('historyBody'),
-      themeToggle: document.getElementById('themeToggle')
+      themeToggle: document.getElementById('themeToggle'),
+      saveIndicator: document.getElementById('saveIndicator') // [NEW]
     };
 
     const sampleNames = ['阿明','志豪','阿傑','家朗','Ivan','Ben','Chris','阿樂','阿邦','Winnie','Cherry','Mandy','Ken','小彤','Oscar','Jason'];
 
+    // ─────────────────────────────────────────────
+    // [NEW] localStorage persistence
+    // ─────────────────────────────────────────────
+    const STORAGE_KEY = 'volleyball_fun_game_v3';
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        const now = new Date().toLocaleTimeString('zh-Hant', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        els.saveIndicator.textContent = `✅ 已自動儲存於 ${now}`;
+      } catch (e) {
+        els.saveIndicator.textContent = '⚠️ 自動儲存失敗（儲存空間不足？）';
+      }
+    }
+
+    function loadStateFromStorage() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return false;
+        const saved = JSON.parse(raw);
+        Object.assign(state, saved);
+        // Restore currentRound reference to match the last item in rounds
+        if (state.rounds && state.rounds.length > 0) {
+          state.currentRound = state.rounds[state.rounds.length - 1];
+        }
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    // ─────────────────────────────────────────────
+    // [NEW] Export JSON
+    // ─────────────────────────────────────────────
+    function exportState() {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      const date = new Date().toISOString().slice(0, 16).replace('T', '_').replace(':', '');
+      a.download = `volleyball_backup_${date}.json`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    // ─────────────────────────────────────────────
+    // [NEW] Import JSON
+    // ─────────────────────────────────────────────
+    function importStateFromFile(file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          Object.assign(state, parsed);
+          if (state.rounds && state.rounds.length > 0) {
+            state.currentRound = state.rounds[state.rounds.length - 1];
+          }
+          // Restore winner radio
+          if (state.currentRound && state.currentRound.winner) {
+            const radio = document.querySelector(`input[name="winner"][value="${state.currentRound.winner}"]`);
+            if (radio) radio.checked = true;
+          }
+          renderAvailablePlayers();
+          renderRound();
+          renderHistoryMatrix();
+          updateStats();
+          saveState();
+          alert('✅ 備份還原成功！');
+        } catch (err) {
+          alert('❌ 檔案格式有誤，請確認是正確的備份 JSON 檔。');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // ─────────────────────────────────────────────
+    // Utilities
+    // ─────────────────────────────────────────────
     function uid() {
       return Math.random().toString(36).slice(2, 10);
     }
@@ -651,6 +755,7 @@
           if (player) player.active = e.target.checked;
           updateStats();
           renderHistoryMatrix();
+          saveState(); // [NEW]
         });
       });
       updateStats();
@@ -686,6 +791,9 @@
       return Math.max(...rests) - Math.min(...rests);
     }
 
+    // ─────────────────────────────────────────────
+    // [CHANGE 1] buildRestCandidates — 休息次數少 優先於 出賽次數少
+    // ─────────────────────────────────────────────
     function buildRestCandidates(availablePlayers, restSlots) {
       if (restSlots <= 0) return [];
       const lastRound = state.currentRound;
@@ -698,15 +806,15 @@
       const scored = [...availablePlayers].map(player => {
         const hadNoRest = player.restCount === 0 ? 1 : 0;
         const wasLoser = loserIds.has(player.id) ? 1 : 0;
-	const playBias = player.playCount;
+        const playBias = player.playCount;
         const restBias = player.restCount;
-	const playMinusRest = player.playCount - player.restCount;
+        const playMinusRest = player.playCount - player.restCount;
         const teamBalanceGap = Math.abs(player.teamACount - player.teamBCount);
         return {
           player,
           score: [
-		  	restBias,
-            -playBias,
+            restBias,       // [CHANGED] 第1優先：休息次數少（原為第2）
+            -playBias,       // [CHANGED] 第2優先：出賽次數少（原為第1）
             -hadNoRest,
             -wasLoser,
             -playMinusRest,
@@ -727,43 +835,14 @@
       return scored.slice(0, restSlots).map(item => item.player);
     }
 
+    // ─────────────────────────────────────────────
+    // [CHANGE 2] assignTeams — 完全隨機分隊
+    // ─────────────────────────────────────────────
     function assignTeams(playingPool) {
-		const shuffled = shuffle(playingPool);
-		return { teamA: shuffled.slice(0, 6), teamB: shuffled.slice(6, 12) };
-	}
-	  
-<!--
-    function assignTeams(playingPool) {
-      const ordered = [...playingPool].sort((a, b) => {
-        const diffA = a.teamACount - a.teamBCount;
-        const diffB = b.teamACount - b.teamBCount;
-        if (diffA !== diffB) return diffA - diffB;
-        if (a.playCount !== b.playCount) return a.playCount - b.playCount;
-        return Math.random() - 0.5;
-      });
-
-      const teamA = [];
-      const teamB = [];
-      ordered.forEach(player => {
-        const bias = player.teamACount - player.teamBCount;
-        if (teamA.length >= 6) {
-          teamB.push(player);
-        } else if (teamB.length >= 6) {
-          teamA.push(player);
-        } else if (bias > 0) {
-          teamB.push(player);
-        } else if (bias < 0) {
-          teamA.push(player);
-        } else if (teamA.length <= teamB.length) {
-          teamA.push(player);
-        } else {
-          teamB.push(player);
-        }
-      });
-      return { teamA, teamB };
+      const shuffled = shuffle(playingPool);
+      return { teamA: shuffled.slice(0, 6), teamB: shuffled.slice(6, 12) };
     }
--->
-	  
+
     function finalizeRound(roundNumber, teamA, teamB, restPlayers, inactivePlayers, isNextRound) {
       teamA.forEach(player => {
         player.playCount += 1;
@@ -817,8 +896,8 @@
       const restSlots = availablePlayers.length - 12;
       const restPlayers = buildRestCandidates(availablePlayers, restSlots);
       const restIds = new Set(restPlayers.map(p => p.id));
-      const playingPool = shuffle(availablePlayers.filter(p => !restIds.has(p.id)));
-      const { teamA, teamB } = assignTeams(playingPool);
+      const playingPool = availablePlayers.filter(p => !restIds.has(p.id));
+      const { teamA, teamB } = assignTeams(playingPool); // playingPool passed directly; assignTeams now shuffles internally
       const roundNumber = state.round + 1;
 
       finalizeRound(roundNumber, teamA, teamB, restPlayers, inactivePlayers, isNextRound);
@@ -826,6 +905,7 @@
       renderRound();
       renderHistoryMatrix();
       updateStats();
+      saveState(); // [NEW]
     }
 
     function renderRound() {
@@ -851,7 +931,7 @@
       els.restInfo.textContent = round.restPlayers.length ? `${round.restPlayers.length} 人` : '0 人';
 
       const summaryParts = [];
-      summaryParts.push(`第 ${round.round} 局已產生，A/B 隊各 6 人。`);
+      summaryParts.push(`第 ${round.round} 局已產生，A/B 隊各 6 人（隨機分配）。`);
       if (round.restPlayers.length) {
         summaryParts.push(`本局輪休：${round.restPlayers.map(p => p.name).join('、')}。`);
       } else {
@@ -904,7 +984,7 @@
           else cells += '<td><span class="cell-tag cell-na">—</span></td>';
         }
         cells += `<td>${player.playCount}</td>`;
-	cells += `<td>${player.restCount}</td>`;
+        cells += `<td>${player.restCount}</td>`;
         tr.innerHTML = cells;
         els.historyBody.appendChild(tr);
       });
@@ -916,10 +996,17 @@
         return;
       }
       state.currentRound.winner = winner;
+      // Also update the same round inside state.rounds array
+      const idx = state.rounds.findIndex(r => r.round === state.currentRound.round);
+      if (idx !== -1) state.rounds[idx].winner = winner;
       renderRound();
       clearNotice();
+      saveState(); // [NEW]
     }
 
+    // ─────────────────────────────────────────────
+    // Event listeners
+    // ─────────────────────────────────────────────
     document.getElementById('loadPlayersBtn').addEventListener('click', () => {
       const players = parsePlayers(els.playerInput.value);
       if (!players.length) {
@@ -934,6 +1021,7 @@
       renderRound();
       renderHistoryMatrix();
       clearNotice();
+      saveState(); // [NEW]
     });
 
     document.getElementById('sampleBtn').addEventListener('click', () => {
@@ -947,6 +1035,8 @@
       state.currentRound = null;
       state.rounds = [];
       els.playerInput.value = '';
+      localStorage.removeItem(STORAGE_KEY); // [NEW]
+      els.saveIndicator.textContent = '已清空所有資料及本機儲存。'; // [NEW]
       renderAvailablePlayers();
       renderRound();
       renderHistoryMatrix();
@@ -960,6 +1050,16 @@
       radio.addEventListener('change', (e) => recordWinner(e.target.value));
     });
 
+    // [NEW] Export button
+    document.getElementById('exportBtn').addEventListener('click', exportState);
+
+    // [NEW] Import file input
+    document.getElementById('importFile').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) importStateFromFile(file);
+      e.target.value = ''; // reset so same file can be re-imported
+    });
+
     els.themeToggle.addEventListener('click', () => {
       const html = document.documentElement;
       const isDark = html.getAttribute('data-theme') === 'dark';
@@ -967,6 +1067,19 @@
       els.themeToggle.textContent = isDark ? '🌙' : '☀️';
       els.themeToggle.setAttribute('aria-label', isDark ? '切換深色模式' : '切換淺色模式');
     });
+
+    // ─────────────────────────────────────────────
+    // [NEW] Init — restore from localStorage first
+    // ─────────────────────────────────────────────
+    const restored = loadStateFromStorage();
+    if (restored && state.players.length > 0) {
+      // Restore winner radio if applicable
+      if (state.currentRound && state.currentRound.winner) {
+        const radio = document.querySelector(`input[name="winner"][value="${state.currentRound.winner}"]`);
+        if (radio) radio.checked = true;
+      }
+      els.saveIndicator.textContent = `✅ 已從本機還原上次記錄（共 ${state.round} 局）`;
+    }
 
     renderAvailablePlayers();
     renderRound();
