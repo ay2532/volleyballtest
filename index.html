@@ -705,8 +705,8 @@
         return {
           player,
           score: [
+		  	-restBias,
             -playBias,
-            -restBias,
             -hadNoRest,
             -wasLoser,
             -playMinusRest,
@@ -727,6 +727,12 @@
       return scored.slice(0, restSlots).map(item => item.player);
     }
 
+    function assignTeams(playingPool) {
+		const shuffled = shuffle(playingPool);
+		return { teamA: shuffled.slice(0, 6), teamB: shuffled.slice(6, 12) };
+	}
+	  
+<!--
     function assignTeams(playingPool) {
       const ordered = [...playingPool].sort((a, b) => {
         const diffA = a.teamACount - a.teamBCount;
@@ -756,7 +762,8 @@
       });
       return { teamA, teamB };
     }
-
+-->
+	  
     function finalizeRound(roundNumber, teamA, teamB, restPlayers, inactivePlayers, isNextRound) {
       teamA.forEach(player => {
         player.playCount += 1;
